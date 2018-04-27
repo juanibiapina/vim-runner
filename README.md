@@ -54,3 +54,7 @@ There is also `runner#suite` which doesn't append the file name, `runner#last` w
 To actually run the command, use any runner of your choice. You can find a list of interesting implementations here: https://github.com/janko-m/vim-test/blob/master/autoload/test/strategy.vim
 
 For more options on how to configure runner commands per project, check out [projectionist](https://github.com/tpope/vim-projectionist) documentation.
+
+## Credits
+
+Much of the inspiration for this projection came from [vim-test](https://github.com/janko-m/vim-test). If you're looking for an out of the box, zero configuration (but customizable) solution that works for many languages, try that instead.
