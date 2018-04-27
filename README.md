@@ -1,4 +1,4 @@
-# vim-runner
+# runner.vim
 
 Determine runner commands based on [projectionist](https://github.com/tpope/vim-projectionist) configuration.
 
