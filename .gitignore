@@ -1,0 +1,4 @@
+Flavorfile.lock
+.vim-flavor/
+/doc/tags
+.ruby-version
