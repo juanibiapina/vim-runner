@@ -1,0 +1,89 @@
+*runner.txt* define runner commands using projectionist
+
+1. Introduction
+
+Runner.txt allows you to define runner commands that can be used, for instance,
+to run tests for the current file. By using projectionist, you can configure
+runners using file patterns for each project separately or using global
+heuristics.
+
+It works by finding the runner property defined by a projectionist
+configuration and combining that with the current file path. If the current
+file doesn't specify a runner property, it will try the alternate file.
+
+2. Example usage
+
+Given these heuristics:
+>
+let g:projectionist_heuristics = {
+  \  "bin/rspec" : {
+  \    "spec/*_spec.rb" : {
+  \      "runner" : "bin/rspec",
+  \    },
+  \  },
+  \  "Gemfile" : {
+  \    "spec/*_spec.rb" : {
+  \      "runner" : "bundle exec rspec",
+  \    },
+  \  },
+  \  "*.gemspec" : {
+  \    "spec/*_spec.rb" : {
+  \      "alternate": "lib/{}.rb",
+  \    },
+  \    "lib/*.rb" : {
+  \      "alternate": "spec/{}_spec.rb",
+  \    },
+  \  },
+  \}
+<
+
+The following commands are returned:
+
+- When on a gem without binstubs, editing an `rspec` file on line 10:
+  - `runner#nearest`: `bundle exec rspec spec/file_spec.rb:10`
+  - `runner#file`: `bundle exec rspec spec/file_spec.rb`
+
+- When on a gem without binstubs, editing a `lib` file on line 20:
+  - `runner#nearest`: `bundle exec rspec spec/file_spec.rb`
+  - `runner#file`: `bundle exec rspec spec/file_spec.rb`
+
+- When on a gem with binstubs, editing an `rspec` file on line 10:
+  - `runner#nearest`: `bin/rspec spec/file_spec.rb:10`
+  - `runner#file`: `bin/rspec spec/file_spec.rb`
+
+- When on a gem with binstubs, editing a `lib` file on line 20:
+  - `runner#nearest`: `bin/rspec spec/file_spec.rb`
+  - `runner#file`: `bin/rspec spec/file_spec.rb`
+
+Note how it automatically detects the alternate file.
+
+There is also `runner#suite` which doesn't append the file name, `runner#last`
+which just returns the last command built and `runner#visit` which edits the
+file detected in the last command.
+
+To actually run the command, use any runner of your choice. You can find a list
+of interesting implementations here:
+https://github.com/janko-m/vim-test/blob/master/autoload/test/strategy.vim
+
+3. Functions
+
+- runner#nearest()
+
+Returns a command with the current file name and line number. Useful for
+running only a subset of tests.
+
+- runner#file()
+
+Returns a command with the current file.
+
+- runner#suite()
+
+Returns a command without a filename.
+
+- runner#last()
+
+Returns the last generated command, independent of the current file.
+
+- runner#visit()
+
+Edits the file used to generate the last command.
