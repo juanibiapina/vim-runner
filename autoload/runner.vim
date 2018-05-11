@@ -18,10 +18,6 @@ function! runner#last() abort
   endif
 endfunction
 
-function! runner#exists() abort
-  return s:has_runner(expand('%')) || s:has_runner(s:alternate_file())
-endfunction
-
 function! s:run(type) abort
   let alternate_file = s:alternate_file()
 
