@@ -49,7 +49,8 @@ let g:projectionist_heuristics = {
 
 Note how it automatically detects the alternate file.
 
-There is also `runner#suite` which doesn't append the file name, `runner#last` which just returns the last command built and `runner#visit` which edits the file detected in the last command.
+There is also `runner#suite` which doesn't append the file name and
+`runner#last` which just returns the last command built.
 
 To actually run the command, use any runner of your choice. You can find a list of interesting implementations here: https://github.com/janko-m/vim-test/blob/master/autoload/test/strategy.vim
 

@@ -35,17 +35,6 @@ describe 'Main'
     call runner#nearest() | call runner#file() | call runner#suite() | call runner#last()
   end
 
-  it "can go to the last run test"
-    edit +3 spec/normal_spec.rb
-    call runner#nearest()
-
-    edit foo.txt
-    call runner#visit()
-
-    Expect expand('%') == 'spec/normal_spec.rb'
-    Expect line('.') == 3
-  end
-
   it "runs tests on different granularities on alternate file"
     view lib/normal.rb
 

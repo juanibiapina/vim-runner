@@ -22,25 +22,12 @@ function! runner#exists() abort
   return s:has_runner(expand('%')) || s:has_runner(s:alternate_file())
 endfunction
 
-function! runner#visit() abort
-  if exists('g:runner#last_position')
-    if g:runner#last_position['line'] !=# ''
-      execute 'edit' '+'.g:runner#last_position['line'] g:runner#last_position['file']
-    else
-      execute 'edit' g:runner#last_position['file']
-    endif
-  else
-    call s:echo_failure('No last runner command')
-  endif
-endfunction
-
 function! s:run(type) abort
   let alternate_file = s:alternate_file()
 
   if s:has_runner(expand('%'))
     let position = s:get_position(expand('%'))
-    let g:runner#last_position = position
-  elseif !empty(alternate_file) && s:has_runner(alternate_file) && (!exists('g:runner#last_position') || alternate_file !=# g:runner#last_position['file'])
+  elseif !empty(alternate_file) && s:has_runner(alternate_file)
     let position = s:get_position(alternate_file)
   else
     call s:echo_failure("Couldn't determine runner") | return
