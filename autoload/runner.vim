@@ -42,8 +42,6 @@ function! s:run(type) abort
     let g:runner#last_position = position
   elseif !empty(alternate_file) && s:has_runner(alternate_file) && (!exists('g:runner#last_position') || alternate_file !=# g:runner#last_position['file'])
     let position = s:get_position(alternate_file)
-  elseif exists('g:runner#last_position')
-    let position = g:runner#last_position
   else
     call s:echo_failure("Couldn't determine runner") | return
   endif

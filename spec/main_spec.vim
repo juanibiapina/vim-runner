@@ -21,15 +21,6 @@ describe 'Main'
     Expect runner#suite() == 'rspec'
   end
 
-  it "remembers the last test-run position when not on test file"
-    edit spec/normal_spec.rb
-    call runner#file()
-
-    edit foo.txt
-
-    Expect runner#file() == 'rspec spec/normal_spec.rb'
-  end
-
   it "runs last test"
     edit spec/normal_spec.rb
     call runner#nearest()
