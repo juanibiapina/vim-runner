@@ -24,19 +24,32 @@ function! s:run(type) abort
   if s:has_runner(expand('%'))
     let position = { "file": expand('%:.'), "line": line('.') }
   elseif !empty(alternate_file) && s:has_runner(alternate_file)
-    let position = { "file": fnamemodify(alternate_file, ':.'), "line": "" }
+    let position = { "file": fnamemodify(alternate_file, ':.') }
   else
     call s:echo_failure("Couldn't determine runner") | return
   endif
 
-  let args = s:build_arg(a:type, position)
+  let cmd = s:determine_command(a:type, position)
 
-  let executable = s:executable(position["file"])
-  let cmd = [executable] + args
-  call filter(cmd, '!empty(v:val)')
+  let cmd_str = s:to_string(cmd)
 
-  let g:runner#last_command = join(cmd)
-  return join(cmd)
+  let g:runner#last_command = cmd_str
+
+  return cmd_str
+endfunction
+
+function! s:to_string(cmd)
+  let result = a:cmd["runner"]
+
+  if has_key(a:cmd, "file")
+    let result .= " " . a:cmd["file"]
+
+    if has_key(a:cmd, "line")
+      let result .= ":" . a:cmd["line"]
+    endif
+  endif
+
+  return result
 endfunction
 
 function! s:has_runner(file) abort
@@ -54,23 +67,27 @@ function! s:echo_failure(message) abort
   echohl None
 endfunction
 
-function! s:build_arg(type, position) abort
-  if a:type ==# 'nearest'
-    let arg = a:position['file']
+function! s:determine_command(type, position)
+  let command = {}
 
-    if a:position['line'] !=# ''
-      let arg = arg . ":" . a:position["line"]
+  let command["runner"] = s:determine_runner(a:position["file"])
+
+  if a:type !=# 'suite'
+    if has_key(a:position, "file")
+      let command["file"] = a:position["file"]
     endif
-
-    return [arg]
-  elseif a:type ==# 'file'
-    return [a:position['file']]
-  else
-    return []
   endif
+
+  if a:type ==# 'nearest'
+    if has_key(a:position, "line")
+      let command["line"] = a:position["line"]
+    endif
+  endif
+
+  return command
 endfunction
 
-function! s:executable(file) abort
+function! s:determine_runner(file) abort
   let file = fnamemodify(a:file, ":p")
   for [root, value] in projectionist#query('runner', { "file": l:file })
     return value
