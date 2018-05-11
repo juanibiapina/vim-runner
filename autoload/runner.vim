@@ -19,16 +19,7 @@ function! runner#last() abort
 endfunction
 
 function! s:run(type) abort
-  let alternate_file = get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
-
-  if s:has_runner(expand('%'))
-    let position = { "file": expand('%:.'), "line": line('.') }
-  elseif !empty(alternate_file) && s:has_runner(alternate_file)
-    let position = { "file": fnamemodify(alternate_file, ':.') }
-  else
-    throw "vim-runner: couldn't determine runner"
-  endif
-
+  let position = s:determine_position()
   let cmd = s:determine_command(a:type, position)
 
   let cmd_str = s:to_string(cmd)
@@ -59,6 +50,18 @@ function! s:has_runner(file) abort
   endfor
 
   return 0
+endfunction
+
+function! s:determine_position() abort
+  let alternate_file = get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
+
+  if s:has_runner(expand('%'))
+    return { "file": expand('%:.'), "line": line('.') }
+  elseif !empty(alternate_file) && s:has_runner(alternate_file)
+    return { "file": fnamemodify(alternate_file, ':.') }
+  endif
+
+  throw "vim-runner: couldn't determine runner"
 endfunction
 
 function! s:determine_command(type, position)
