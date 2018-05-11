@@ -19,12 +19,12 @@ function! runner#last() abort
 endfunction
 
 function! s:run(type) abort
-  let alternate_file = s:alternate_file()
+  let alternate_file = get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
 
   if s:has_runner(expand('%'))
-    let position = s:get_position(expand('%'))
+    let position = { "file": expand('%:.'), "line": line('.') }
   elseif !empty(alternate_file) && s:has_runner(alternate_file)
-    let position = s:get_position(alternate_file)
+    let position = { "file": fnamemodify(alternate_file, ':.'), "line": "" }
   else
     call s:echo_failure("Couldn't determine runner") | return
   endif
@@ -46,18 +46,6 @@ function! s:has_runner(file) abort
   endfor
 
   return 0
-endfunction
-
-function! s:alternate_file() abort
-  return get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
-endfunction
-
-function! s:get_position(path) abort
-  let position = {}
-  let position['file'] = fnamemodify(a:path, ':.')
-  let position['line'] = a:path == expand('%') ? line('.') : ''
-
-  return position
 endfunction
 
 function! s:echo_failure(message) abort
