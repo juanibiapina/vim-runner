@@ -23,10 +23,4 @@ describe "Rspec other"
     Expect runner#file() == 'rspec spec/normal_spec.rb'
   end
 
-  it "runs test suites"
-    view spec/normal_spec.rb
-
-    Expect runner#suite() == 'rspec'
-  end
-
 end

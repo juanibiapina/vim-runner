@@ -23,10 +23,4 @@ describe "Rspec zeus"
     Expect runner#file() == 'zeus rspec spec/normal_spec.rb'
   end
 
-  it "runs test suites"
-    view spec/normal_spec.rb
-
-    Expect runner#suite() == 'zeus rspec'
-  end
-
 end

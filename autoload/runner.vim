@@ -6,10 +6,6 @@ function! runner#file() abort
   return s:run('file')
 endfunction
 
-function! runner#suite() abort
-  return s:run('suite')
-endfunction
-
 function! runner#last() abort
   if exists('g:runner#last_command')
     return g:runner#last_command
@@ -69,10 +65,8 @@ function! s:determine_command(type, position)
 
   let command["runner"] = s:determine_runner(a:position["file"])
 
-  if a:type !=# 'suite'
-    if has_key(a:position, "file")
-      let command["file"] = a:position["file"]
-    endif
+  if has_key(a:position, "file")
+    let command["file"] = a:position["file"]
   endif
 
   if a:type ==# 'nearest'

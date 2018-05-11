@@ -17,8 +17,6 @@ describe 'Main'
     Expect runner#nearest() == 'rspec spec/normal_spec.rb:2'
 
     Expect runner#file() == 'rspec spec/normal_spec.rb'
-
-    Expect runner#suite() == 'rspec'
   end
 
   it "runs last test"
@@ -36,7 +34,5 @@ describe 'Main'
     Expect runner#nearest() == 'rspec spec/normal_spec.rb'
 
     Expect runner#file() == 'rspec spec/normal_spec.rb'
-
-    Expect runner#suite() == 'rspec'
   end
 end

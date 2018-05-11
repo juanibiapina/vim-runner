@@ -23,10 +23,4 @@ describe "Rspec bundler"
     Expect runner#file() == 'bundle exec rspec spec/normal_spec.rb'
   end
 
-  it "runs test suites"
-    view spec/normal_spec.rb
-
-    Expect runner#suite() == 'bundle exec rspec'
-  end
-
 end

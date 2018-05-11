@@ -23,10 +23,4 @@ describe "Rspec binstub"
     Expect runner#file() == 'bin/rspec spec/normal_spec.rb'
   end
 
-  it "runs test suites"
-    view spec/normal_spec.rb
-
-    Expect runner#suite() == 'bin/rspec'
-  end
-
 end
