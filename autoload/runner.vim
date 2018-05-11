@@ -49,17 +49,7 @@ function! s:has_runner(file) abort
 endfunction
 
 function! s:alternate_file() abort
-  let alternate_file = ''
-
-  if empty(alternate_file)
-    let alternate_file = get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
-  endif
-
-  if empty(alternate_file) && exists('g:loaded_rails') && !empty(rails#app())
-    let alternate_file = rails#buffer().alternate()
-  endif
-
-  return alternate_file
+  return get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
 endfunction
 
 function! s:get_position(path) abort
