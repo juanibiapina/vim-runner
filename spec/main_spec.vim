@@ -28,6 +28,17 @@ describe 'Main'
     Expect runner#last() == 'rspec spec/normal_spec.rb:1'
   end
 
+  it "runs tests for files in quickfix list with runners (uniquely)"
+    edit spec/normal_spec.rb
+    let &g:errorformat = '%f:%l'
+    caddexpr "spec/file1_spec.rb:10"
+    caddexpr "spec/file2_spec.rb:20"
+    caddexpr "spec/file1_spec.rb:30"
+    caddexpr "other:30"
+
+    Expect runner#quickfix() == 'rspec spec/file1_spec.rb spec/file2_spec.rb'
+  end
+
   it "runs tests on different granularities on alternate file"
     view lib/normal.rb
 

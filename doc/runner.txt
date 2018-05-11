@@ -57,7 +57,8 @@ The following commands are returned:
 
 Note how it automatically detects the alternate file.
 
-There is also `runner#last` which just returns the last command built.
+There is also `runner#last` which just returns the last command built and
+`runner#quickfix` which runs tests for all files in the quickfix list.
 
 To actually run the command, use any runner of your choice. You can find a list
 of interesting implementations here:
@@ -73,6 +74,10 @@ running only a subset of tests.
 - runner#file()
 
 Returns a command with the current file.
+
+- runner#quickfix()
+
+Returns a command for all files in quickfix list (uniquely).
 
 - runner#last()
 

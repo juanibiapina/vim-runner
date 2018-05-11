@@ -14,6 +14,45 @@ function! runner#last() abort
   throw 'vim-runner: no last runner command'
 endfunction
 
+function! runner#quickfix() abort
+  let cmds = {}
+  let items = getqflist()
+  for item in items
+    let position = { "file": bufname(item.bufnr) }
+
+    if !s:has_runner(position["file"])
+      let alternate_file = s:query_alternate(position["file"])
+
+      if s:has_runner(alternate_file)
+        let position = { "file": alternate_file }
+      else
+        continue
+      endif
+    endif
+
+    let cmd = s:determine_command('file', position)
+
+    if !has_key(cmds, cmd["runner"])
+      let cmds[cmd["runner"]] = []
+    endif
+
+    call add(cmds[cmd["runner"]], cmd["file"])
+  endfor
+
+  call map(values(cmds), "uniq(sort(v:val))")
+
+  let result = ""
+  for entry in items(cmds)
+    let result .= entry[0]
+    for file in entry[1]
+      let result .= " " . file
+    endfor
+  endfor
+
+  let g:runner#last_command = result
+  return result
+endfunction
+
 function! s:run(type) abort
   let position = s:determine_position()
   let cmd = s:determine_command(a:type, position)
