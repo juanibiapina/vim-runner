@@ -48,8 +48,14 @@ function! s:has_runner(file) abort
   return 0
 endfunction
 
+function! s:query_alternate(file) abort
+  let file = fnamemodify(a:file, ":p")
+
+  return get(filter(map(projectionist#query("alternate", { "file": file }), "v:val[1]"), "filereadable(v:val)"), 0, "")
+endfunction
+
 function! s:determine_position() abort
-  let alternate_file = get(filter(projectionist#query_file('alternate'), 'filereadable(v:val)'), 0, '')
+  let alternate_file = s:query_alternate(expand('%'))
 
   if s:has_runner(expand('%'))
     return { "file": expand('%:.'), "line": line('.') }
