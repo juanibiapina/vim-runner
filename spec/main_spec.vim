@@ -30,11 +30,6 @@ describe 'Main'
     Expect runner#last() == 'rspec spec/normal_spec.rb:1'
   end
 
-  it "doesn't raise an error when unable to run tests"
-    edit foo.txt
-    call runner#nearest() | call runner#file() | call runner#suite() | call runner#last()
-  end
-
   it "runs tests on different granularities on alternate file"
     view lib/normal.rb
 

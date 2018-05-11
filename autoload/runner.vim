@@ -13,9 +13,9 @@ endfunction
 function! runner#last() abort
   if exists('g:runner#last_command')
     return g:runner#last_command
-  else
-    call s:echo_failure('No last runner command')
   endif
+
+  throw 'vim-runner: no last runner command'
 endfunction
 
 function! s:run(type) abort
@@ -26,7 +26,7 @@ function! s:run(type) abort
   elseif !empty(alternate_file) && s:has_runner(alternate_file)
     let position = { "file": fnamemodify(alternate_file, ':.') }
   else
-    call s:echo_failure("Couldn't determine runner") | return
+    throw "vim-runner: couldn't determine runner"
   endif
 
   let cmd = s:determine_command(a:type, position)
@@ -59,12 +59,6 @@ function! s:has_runner(file) abort
   endfor
 
   return 0
-endfunction
-
-function! s:echo_failure(message) abort
-  echohl WarningMsg
-  echo a:message
-  echohl None
 endfunction
 
 function! s:determine_command(type, position)
