@@ -1,0 +1,5 @@
+{
+  "spec/*_spec.vim" : {
+    "runner": "vim-flavor test"
+  }
+}
