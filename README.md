@@ -49,7 +49,7 @@ let g:projectionist_heuristics = {
 
 Note how it automatically detects the alternate file.
 
-There is also `runner#last` which just returns the last command built and `runner#quickfix` which runs tests for all files in the quickfix list.
+There is also `runner#last` which just returns the last command built, `runner#quickfix` which runs tests for all files in the quickfix list and `runner#cached` which runs tests for all files cached in git.
 
 To actually run the command, use any runner of your choice. You can find a list of interesting implementations here: https://github.com/janko-m/vim-test/blob/master/autoload/test/strategy.vim
 
