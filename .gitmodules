@@ -1,0 +1,3 @@
+[submodule "vendor/vim-projectionist"]
+	path = vendor/vim-projectionist
+	url = https://github.com/tpope/vim-projectionist.git

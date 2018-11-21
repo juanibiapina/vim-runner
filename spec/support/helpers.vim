@@ -1,5 +1,3 @@
-runtime! plugin/projectionist.vim
-
 let g:projectionist_heuristics = {
   \  "*.gemspec" : {
   \    "spec/*_spec.rb" : {
@@ -30,8 +28,3 @@ let g:projectionist_heuristics = {
   \    },
   \  }
   \}
-
-function! Teardown() abort
-  bufdo! bdelete!
-  unlet! g:runner#last_command g:runner#last_position
-endfunction
